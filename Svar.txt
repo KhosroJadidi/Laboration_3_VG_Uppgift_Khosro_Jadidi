@@ -1,0 +1,1221 @@
+Khosro Jadidi
+
+-------------------------
+Task 1 G-uppgiften
+
+#region 1-Skapa en databas vid namn citydb
+
+Mongosats:
+use citydb
+
+svar:
+switched to db citydb
+#endregion
+
+#region 2-Sätt in följande dokument i en kollektion med namn: cities 
+ 
+Mongosats:
+> db.citydb.insert({"_id":1,"name":"Stockholm","population":1372565})
+svar:
+WriteResult({ "nInserted" : 1 })
+
+Mongosats:
+> db.citydb.insert({"_id":2,"name":"Göteborg","population":549839})
+svar:
+WriteResult({ "nInserted" : 1 })
+
+Mongosats:
+> db.citydb.insert({"_id":3,"name":"Malmö","population":280415})
+svar:
+WriteResult({ "nInserted" : 1 })
+
+Mongosats:
+> db.citydb.insert({"_id":4,"name":"Uppsala","population":140454})
+svar:
+WriteResult({ "nInserted" : 1 })
+
+Mongosats:
+> db.citydb.insert({"_id":5,"name":"Västerås","population":110877})
+svar:
+WriteResult({ "nInserted" : 1 })
+
+
+OBS: kunde även ha använt mig av insertMany
+#endregion
+
+#region 3-Hitta ett dokument där namnet är “Malmö” och visa bara “namn” och “population”. 
+
+
+Mongosats:
+> db.citydb.find({"name":"Malmö"},{"name":1,"population":1,_id:0}).pretty()
+
+svar:
+{ "name" : "Malmö", "population" : 280415 }
+#endregion
+
+#region 4-Uppdatera dokumentet som har “namn” “Göteborg” med “population” 549890 
+
+Mongosats:
+db.citydb.update({'name':'Göteborg'},{$set:{'population':549890}})
+
+svar:
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+
+#endregion
+
+#region 5-Ta bort dokumentet med _id:4
+ 
+Mongosats:
+> db.citydb.remove({'_id':4})
+
+svar:
+WriteResult({ "nRemoved" : 1 })
+
+#endregion
+
+#region 6-Uppdatera dokumentet som har “namn” “Västerås” och öka (med increment) ”population” fält så att det blir 110879. (increment by 2)
+
+Mongosats:
+> db.citydb.update({'name':'Västerås'},{$inc:{population:2}})
+
+svar:
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })	
+ 
+#endregion
+
+#region 7- Lägg till ett fält “country” och värdet “Sweden” till alla dokument. 
+
+Mongosats:
+> db.citydb.update({},{$set:{'country':'Sweden'}},{multi:true})
+
+svar:
+WriteResult({ "nMatched" : 4, "nUpserted" : 0, "nModified" : 4 })
+#endregion
+
+#region 8- Byt namn på fältet “country” till “Country”.
+
+
+Mongosats:
+> db.citydb.updateMany({},{$rename:{"country":"Country"}})
+
+svar:
+{ "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 4 }
+#endregion
+
+------------------------
+Task 2 G-uppgiften
+
+#region 1- Skapa en databas vid namn animalsdb. 
+
+Mongosats:
+
+C:\Users\Khosro Jadidi>cd C:\Users\Khosro Jadidi\Dropbox\Databaser\Laboration 3-Khosro Jadidi\Laboration3
+
+C:\Users\Khosro Jadidi\Dropbox\Databaser\Laboration 3-Khosro Jadidi\Laboration3>mongo
+
+> use animalsdb
+
+svar:
+switched to db animalsdb
+
+#endregion
+
+#region 2- Gå till databasen animalsdb. 
+
+animalsdb syns inte i listan, eftersom det innehåller ingen dokument. men det går att switcha till den oavsett.
+
+
+Mongosats:
+> use animalsdb
+
+svar:
+switched to db animalsdb
+
+#endregion
+
+#region 3- Skriv i mongo-skalet : load ("animals.js"). Vad gör den raden? Visa resultatet. 
+
+Mongosats:
+> load ("animals.js")
+
+svar:
+2020-01-26T20:13:33.578+0100 E  -        [js] file [animals.js] doesn't exist
+2020-01-26T20:13:33.580+0100 E  QUERY    [js] Error: error loading js file: animals.js :
+@(shell):1:1
+
+
+load metoden kunde inte hitta filen, så jag gav filens adress till metoden som en argument:
+
+
+Mongosats:
+> load ('C:/Users/Khosro Jadidi/Dropbox/Databaser/Laboration 3-Khosro Jadidi/Laboration3/animals.js')
+
+svar:
+true
+
+
+#endregion
+
+#region 4- Hitta alla data från collection animals.
+
+
+Mongosats:
+> db.animals.find().pretty()
+
+svar:
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd0"),
+        "name" : "Elephant",
+        "color" : "grey",
+        "weight" : 7000,
+        "has_tusks" : true,
+        "data" : [
+                "mammal",
+                "herbivore",
+                "live in groups"
+        ],
+        "found_in" : [
+                "sub-Saharan Africa",
+                "South Asia",
+                "Southeast Asia"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd1"),
+        "name" : "Elk",
+        "color" : "brown",
+        "weight" : 395,
+        "min_weight_male" : 320,
+        "max_weight_male" : 475,
+        "min_weight_female" : 275,
+        "max_weight_female" : 375,
+        "has_antlers" : true,
+        "data" : [
+                "mammal",
+                "deer family",
+                "herbivore"
+        ],
+        "found_in" : [
+                "Canada",
+                "Alaska",
+                "New England",
+                "Scandinavia",
+                "Latvia",
+                "Estonia",
+                "Russia"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd2"),
+        "name" : "Fox",
+        "color" : "orange",
+        "weight" : 6,
+        "suborder" : "Caniformia",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "family" : "Canidae",
+        "data" : [
+                "mammal",
+                "omnivore"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd3"),
+        "name" : "Wolf",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "suborder" : "Caniformia",
+        "color" : "grey",
+        "weight" : 44,
+        "min_weight_male" : 43,
+        "max_weight_male" : 45,
+        "min_weight_female" : 36,
+        "max_weight_female" : 38.5,
+        "found_in" : [
+                "Eurasia",
+                "North America"
+        ],
+        "data" : [
+                "mammal",
+                "carnivore",
+                "canid",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd4"),
+        "name" : "Bear",
+        "color" : "brown",
+        "weight" : 505,
+        "found_in" : [
+                "North America",
+                "South America",
+                "Europe",
+                "Asia"
+        ],
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "suborder" : "Caniformia",
+        "family" : "Ursidae",
+        "data" : [
+                "mammal",
+                "carnivore",
+                "nonretractile claws",
+                "rounded ears",
+                "can stand on its rear legs"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd5"),
+        "name" : "Hyena",
+        "family" : "Hyaenidae",
+        "suborder" : "Feliformia",
+        "order" : "Carnivora",
+        "color" : "brown",
+        "weight" : 47,
+        "min_weight_male" : 40.5,
+        "max_weight_male" : 55,
+        "min_weight_female" : 44.5,
+        "max_weight_female" : 63.9,
+        "spotted" : true,
+        "data" : [
+                "mammal",
+                "carnivore",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd6"),
+        "name" : "Orangutan",
+        "alternative_name" : "Orangutang",
+        "color" : "orange",
+        "weight" : 75,
+        "data" : [
+                "herbivore",
+                "opposable thumbs",
+                "opposable big toe",
+                "eat fruits",
+                "primate",
+                "ape"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd7"),
+        "name" : "Reindeer",
+        "class" : "Mammalia",
+        "color" : "grey",
+        "weight" : 200,
+        "alternative_name" : "caribou",
+        "has_antlers" : true,
+        "found_in" : [
+                "northern Europe",
+                "Siberia",
+                "North America"
+        ],
+        "data" : [
+                "mammal",
+                "deer family",
+                "herbivore",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd8"),
+        "name" : "Gorilla",
+        "color" : "black",
+        "weight" : 155,
+        "data" : [
+                "primate",
+                "ape",
+                "herbivore",
+                "can stand on its rear legs",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd9"),
+        "name" : "Chimpanzee",
+        "color" : "black",
+        "weight" : 70,
+        "data" : [
+                "primate",
+                "ape",
+                "omnivore"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fda"),
+        "name" : "Marten",
+        "order" : "Carnivora",
+        "suborder" : "Caniformia",
+        "family" : "Mustelidae",
+        "color" : "brown",
+        "weight" : 1.5,
+        "data" : [
+                "solitary animal"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fdb"),
+        "name" : "Mongoose",
+        "color" : "brown",
+        "weight" : 1.7,
+        "family" : "Herpestidae",
+        "suborder" : "Feliformia",
+        "order" : "Carnivora",
+        "data" : [
+                "carnivore",
+                "eat venomous snakes"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fdc"),
+        "name" : "Meerkat",
+        "found_in" : [
+                "Botswana",
+                "Namibia",
+                "Angola",
+                "South Africa"
+        ],
+        "color" : "yellow",
+        "family" : "Herpestidae",
+        "suborder" : "Feliformia",
+        "order" : "Carnivora",
+        "weight" : 1,
+        "data" : [
+                "can stand on its rear legs",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fdd"),
+        "name" : "Lion",
+        "color" : "yellow",
+        "weight" : 200,
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "family" : "Felidae",
+        "subfamily" : "Pantherinae",
+        "suborder" : "Feliformia",
+        "data" : [
+                "live in groups",
+                "carnivore",
+                "smaller than tigers",
+                "protractible claws"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fde"),
+        "name" : "Raccoon",
+        "color" : "gray",
+        "weight" : 6,
+        "suborder" : "Caniformia",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "family" : "Procyonidae",
+        "data" : [
+                "omnivore",
+                "nocturnal",
+                "plantigrade locomotion",
+                "can stand on its rear legs"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fdf"),
+        "name" : "Black panther",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "family" : "Felidae",
+        "subfamily" : "Pantherinae",
+        "suborder" : "Feliformia",
+        "color" : "black",
+        "weight" : 60,
+        "data" : [
+                "are leopards in Asia and Africa",
+                "are black jaguars in the Americas",
+                "big cat"
+        ]
+}
+
+#endregion
+
+#region 5- Hitta hur många djur det finns totalt i databasen animals? 
+
+
+Mongosats:
+> db.animals.count()
+
+svar:
+16
+
+#endregion
+
+#region 6- Lägg till en array “favorit_food” med “blueberry, honey och ants” för “Bear” . 
+
+
+Mongosats:
+> db.animals.updateOne({'name':'Bear'},{$set:{'favorit_food':["blueberry","honey","ants"]}})
+
+svar:
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+#endregion
+
+#region 7- Ta bort ants och honey från arrayen “favorit_food” och “rounded ears” från arrayen “data” för “Bear”.
+
+
+Mongosats:
+> db.animals.updateOne({'name':'Bear'},{$pull:{favorit_food:{$in:["ants","honey"]}}})
+
+svar:
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+
+Mongosats:
+> db.animals.updateOne({'name':'Bear'},{$pull:{data:"rounded ears"}})
+
+svar:
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+#endregion
+
+#region 8- Hitta hur många gula djur det finns i kollektionen. 
+
+
+Mongosats:
+> db.animals.count({'color':'yellow'})
+
+svar:
+2
+
+#endregion
+
+#region 9- Hitta alla namnet på alla djur vars färg är brun och som lever i Asien och visa deras namn, color och found_in .
+
+
+Mongosats:
+> db.animals.find({'color':'brown','found_in':'Asia'},{"name":1,"color":1,"found_in":1,_id:0}).pretty()
+
+svar:
+{
+        "name" : "Bear",
+        "color" : "brown",
+        "found_in" : [
+                "North America",
+                "South America",
+                "Europe",
+                "Asia"
+        ]
+}
+
+#endregion
+
+#region 10- Lägg till fältet “litter_size” med värdet “4-6-kits” för “Fox”.
+
+
+Mongosats:
+> db.animals.updateOne({'name':'Fox'},{$set:{'litter_size':"4-6-kits"}})
+
+svar:
+{ "acknowledged" : true, "matchedCount" : 1, "modifiedCount" : 1 }
+
+#endregion
+
+#region 11- Lägg till ett fält med namn “likes meat” i arrayen “data” för alla med "order": "Carnivora" och som är gula till färgen. 
+
+
+Mongosats:
+> db.animals.updateMany({'order':'Carnivora','color':'yellow'},{$push:{data:{'likes meat':true}}})
+
+svar:
+{ "acknowledged" : true, "matchedCount" : 2, "modifiedCount" : 2 }
+
+#endregion
+
+#region 12- Gruppera efter färger och visa antal djur per färg.
+
+
+Mongosats:
+> db.animals.aggregate([{"$group":{_id:"$color",count:{$sum:1}}}])
+
+svar:
+{ "_id" : "grey", "count" : 3 }
+{ "_id" : "orange", "count" : 2 }
+{ "_id" : "brown", "count" : 5 }
+{ "_id" : "yellow", "count" : 2 }
+{ "_id" : "gray", "count" : 1 }
+{ "_id" : "black", "count" : 3 }
+
+#endregion
+
+#region 13- Skriv ut antalet djur som väger mer än 100. 
+
+
+Mongosats:
+> db.animals.countDocuments({"weight":{$gt:100}})
+
+svar:
+6
+
+#endregion
+
+#region 14- Skriv ut djur med “order” “Carnivora”, sorterat efter weight i fallande ordning.
+
+
+Mongosats:
+> db.animals.find({'order':'Carnivora'}).sort({weight:-1}).pretty()
+
+svar:
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd4"),
+        "name" : "Bear",
+        "color" : "brown",
+        "weight" : 505,
+        "found_in" : [
+                "North America",
+                "South America",
+                "Europe",
+                "Asia"
+        ],
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "suborder" : "Caniformia",
+        "family" : "Ursidae",
+        "data" : [
+                "mammal",
+                "carnivore",
+                "nonretractile claws",
+                "can stand on its rear legs"
+        ],
+        "favorit_food" : [
+                "blueberry"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fdd"),
+        "name" : "Lion",
+        "color" : "yellow",
+        "weight" : 200,
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "family" : "Felidae",
+        "subfamily" : "Pantherinae",
+        "suborder" : "Feliformia",
+        "data" : [
+                "live in groups",
+                "carnivore",
+                "smaller than tigers",
+                "protractible claws",
+                {
+                        "likes meat" : true
+                }
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fdf"),
+        "name" : "Black panther",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "family" : "Felidae",
+        "subfamily" : "Pantherinae",
+        "suborder" : "Feliformia",
+        "color" : "black",
+        "weight" : 60,
+        "data" : [
+                "are leopards in Asia and Africa",
+                "are black jaguars in the Americas",
+                "big cat"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd5"),
+        "name" : "Hyena",
+        "family" : "Hyaenidae",
+        "suborder" : "Feliformia",
+        "order" : "Carnivora",
+        "color" : "brown",
+        "weight" : 47,
+        "min_weight_male" : 40.5,
+        "max_weight_male" : 55,
+        "min_weight_female" : 44.5,
+        "max_weight_female" : 63.9,
+        "spotted" : true,
+        "data" : [
+                "mammal",
+                "carnivore",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd3"),
+        "name" : "Wolf",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "suborder" : "Caniformia",
+        "color" : "grey",
+        "weight" : 44,
+        "min_weight_male" : 43,
+        "max_weight_male" : 45,
+        "min_weight_female" : 36,
+        "max_weight_female" : 38.5,
+        "found_in" : [
+                "Eurasia",
+                "North America"
+        ],
+        "data" : [
+                "mammal",
+                "carnivore",
+                "canid",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd2"),
+        "name" : "Fox",
+        "color" : "orange",
+        "weight" : 6,
+        "suborder" : "Caniformia",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "family" : "Canidae",
+        "data" : [
+                "mammal",
+                "omnivore"
+        ],
+        "litter_size" : "4-6-kits"
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fde"),
+        "name" : "Raccoon",
+        "color" : "gray",
+        "weight" : 6,
+        "suborder" : "Caniformia",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "family" : "Procyonidae",
+        "data" : [
+                "omnivore",
+                "nocturnal",
+                "plantigrade locomotion",
+                "can stand on its rear legs"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fdb"),
+        "name" : "Mongoose",
+        "color" : "brown",
+        "weight" : 1.7,
+        "family" : "Herpestidae",
+        "suborder" : "Feliformia",
+        "order" : "Carnivora",
+        "data" : [
+                "carnivore",
+                "eat venomous snakes"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fda"),
+        "name" : "Marten",
+        "order" : "Carnivora",
+        "suborder" : "Caniformia",
+        "family" : "Mustelidae",
+        "color" : "brown",
+        "weight" : 1.5,
+        "data" : [
+                "solitary animal"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fdc"),
+        "name" : "Meerkat",
+        "found_in" : [
+                "Botswana",
+                "Namibia",
+                "Angola",
+                "South Africa"
+        ],
+        "color" : "yellow",
+        "family" : "Herpestidae",
+        "suborder" : "Feliformia",
+        "order" : "Carnivora",
+        "weight" : 1,
+        "data" : [
+                "can stand on its rear legs",
+                "live in groups",
+                {
+                        "likes meat" : true
+                }
+        ]
+}
+
+#endregion
+
+#region 15- Hitta alla dokument som har “mammal” eller "carnivore" i deras “data” fält.
+
+
+Mongosats:
+> db.animals.find({'data':{$in:["mammal","carnivore"]}}).pretty()
+
+svar:
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd0"),
+        "name" : "Elephant",
+        "color" : "grey",
+        "weight" : 7000,
+        "has_tusks" : true,
+        "data" : [
+                "mammal",
+                "herbivore",
+                "live in groups"
+        ],
+        "found_in" : [
+                "sub-Saharan Africa",
+                "South Asia",
+                "Southeast Asia"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd1"),
+        "name" : "Elk",
+        "color" : "brown",
+        "weight" : 395,
+        "min_weight_male" : 320,
+        "max_weight_male" : 475,
+        "min_weight_female" : 275,
+        "max_weight_female" : 375,
+        "has_antlers" : true,
+        "data" : [
+                "mammal",
+                "deer family",
+                "herbivore"
+        ],
+        "found_in" : [
+                "Canada",
+                "Alaska",
+                "New England",
+                "Scandinavia",
+                "Latvia",
+                "Estonia",
+                "Russia"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd2"),
+        "name" : "Fox",
+        "color" : "orange",
+        "weight" : 6,
+        "suborder" : "Caniformia",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "family" : "Canidae",
+        "data" : [
+                "mammal",
+                "omnivore"
+        ],
+        "litter_size" : "4-6-kits"
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd3"),
+        "name" : "Wolf",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "suborder" : "Caniformia",
+        "color" : "grey",
+        "weight" : 44,
+        "min_weight_male" : 43,
+        "max_weight_male" : 45,
+        "min_weight_female" : 36,
+        "max_weight_female" : 38.5,
+        "found_in" : [
+                "Eurasia",
+                "North America"
+        ],
+        "data" : [
+                "mammal",
+                "carnivore",
+                "canid",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd4"),
+        "name" : "Bear",
+        "color" : "brown",
+        "weight" : 505,
+        "found_in" : [
+                "North America",
+                "South America",
+                "Europe",
+                "Asia"
+        ],
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "suborder" : "Caniformia",
+        "family" : "Ursidae",
+        "data" : [
+                "mammal",
+                "carnivore",
+                "nonretractile claws",
+                "can stand on its rear legs"
+        ],
+        "favorit_food" : [
+                "blueberry"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd5"),
+        "name" : "Hyena",
+        "family" : "Hyaenidae",
+        "suborder" : "Feliformia",
+        "order" : "Carnivora",
+        "color" : "brown",
+        "weight" : 47,
+        "min_weight_male" : 40.5,
+        "max_weight_male" : 55,
+        "min_weight_female" : 44.5,
+        "max_weight_female" : 63.9,
+        "spotted" : true,
+        "data" : [
+                "mammal",
+                "carnivore",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd7"),
+        "name" : "Reindeer",
+        "class" : "Mammalia",
+        "color" : "grey",
+        "weight" : 200,
+        "alternative_name" : "caribou",
+        "has_antlers" : true,
+        "found_in" : [
+                "northern Europe",
+                "Siberia",
+                "North America"
+        ],
+        "data" : [
+                "mammal",
+                "deer family",
+                "herbivore",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fdb"),
+        "name" : "Mongoose",
+        "color" : "brown",
+        "weight" : 1.7,
+        "family" : "Herpestidae",
+        "suborder" : "Feliformia",
+        "order" : "Carnivora",
+        "data" : [
+                "carnivore",
+                "eat venomous snakes"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fdd"),
+        "name" : "Lion",
+        "color" : "yellow",
+        "weight" : 200,
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "family" : "Felidae",
+        "subfamily" : "Pantherinae",
+        "suborder" : "Feliformia",
+        "data" : [
+                "live in groups",
+                "carnivore",
+                "smaller than tigers",
+                "protractible claws",
+                {
+                        "likes meat" : true
+                }
+        ]
+}
+
+#endregion
+
+#region 16- Hitta alla dokument som har “mammal” och "carnivore" i deras “data” fält.
+
+
+Mongosats:
+> db.animals.find({$and:[{'data':'mammal'},{'data':'carnivore'}]}).pretty()
+
+svar:
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd3"),
+        "name" : "Wolf",
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "suborder" : "Caniformia",
+        "color" : "grey",
+        "weight" : 44,
+        "min_weight_male" : 43,
+        "max_weight_male" : 45,
+        "min_weight_female" : 36,
+        "max_weight_female" : 38.5,
+        "found_in" : [
+                "Eurasia",
+                "North America"
+        ],
+        "data" : [
+                "mammal",
+                "carnivore",
+                "canid",
+                "live in groups"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd4"),
+        "name" : "Bear",
+        "color" : "brown",
+        "weight" : 505,
+        "found_in" : [
+                "North America",
+                "South America",
+                "Europe",
+                "Asia"
+        ],
+        "class" : "Mammalia",
+        "order" : "Carnivora",
+        "suborder" : "Caniformia",
+        "family" : "Ursidae",
+        "data" : [
+                "mammal",
+                "carnivore",
+                "nonretractile claws",
+                "can stand on its rear legs"
+        ],
+        "favorit_food" : [
+                "blueberry"
+        ]
+}
+{
+        "_id" : ObjectId("5e2de644d9dbce2ee5758fd5"),
+        "name" : "Hyena",
+        "family" : "Hyaenidae",
+        "suborder" : "Feliformia",
+        "order" : "Carnivora",
+        "color" : "brown",
+        "weight" : 47,
+        "min_weight_male" : 40.5,
+        "max_weight_male" : 55,
+        "min_weight_female" : 44.5,
+        "max_weight_female" : 63.9,
+        "spotted" : true,
+        "data" : [
+                "mammal",
+                "carnivore",
+                "live in groups"
+        ]
+}
+
+#endregion
+
+---------------------------
+Task 3 G-uppgiften
+
+#region 1-Sätt in följande record i kollektion orders.
+
+Mongosats:
+db.orders.insertMany([{ 
+  "Id": 100, 
+  "Name": "Eva", 
+  "Subscriber": true, 
+  "Payment": { 
+    "Type": "Credit-Card",
+    "Total": 400, 
+    "Success": true 
+  },
+  "Note": "1st Complete Record"
+}, 
+{ 
+  "Id": 101,
+  "Name": "Johan",
+  "Subscriber": true, 
+  "Payment": { 
+    "Type": "Debit-Card", 
+    "Total": 500, 
+    "Success": true 
+  }, 
+  "Note":null 
+}, 
+{ 
+  "Id": 102, 
+  "Name": "Matilda", 
+  "Subscriber": true,
+  "Payment": { 
+    "Type": "Credit-Card",
+    "Total": 700,
+    "Success": false 
+   } 
+},
+{ 
+  "Id": 103,
+  "Name": "Mikael",
+  "Subscriber": false,
+  "Payment": null,
+  "Note": "Payment is Null" 
+}, 
+{ 
+  "Id": 104, 
+  "Name": "Rikard", 
+  "Subscriber": false, 
+  "Payment": { 
+    "Type": "Debit-Card", 
+    "Total": 300, 
+    "Success": false 
+  }, 
+  "Note": "Completed Payment" 
+}
+])
+
+
+Svar:
+
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("5e2f0fa3765a04304c7e3dcb"),
+                ObjectId("5e2f0fa3765a04304c7e3dcc"),
+                ObjectId("5e2f0fa3765a04304c7e3dcd"),
+                ObjectId("5e2f0fa3765a04304c7e3dce"),
+                ObjectId("5e2f0fa3765a04304c7e3dcf")
+        ]
+}
+
+#region 2-Hitta alla dokument där fältet “Note” är “null” eller saknas . 
+
+Mongosats:
+db.orders.find({'Note':null}).pretty()
+
+svar:
+{
+        "_id" : ObjectId("5e2f0fa3765a04304c7e3dcc"),
+        "Id" : 101,
+        "Name" : "Johan",
+        "Subscriber" : true,
+        "Payment" : {
+                "Type" : "Debit-Card",
+                "Total" : 500,
+                "Success" : true
+        },
+        "Note" : null
+}
+{
+        "_id" : ObjectId("5e2f0fa3765a04304c7e3dcd"),
+        "Id" : 102,
+        "Name" : "Matilda",
+        "Subscriber" : true,
+        "Payment" : {
+                "Type" : "Credit-Card",
+                "Total" : 700,
+                "Success" : false
+        }
+}
+
+#endregion
+
+#region 3-Hitta alla dokument där fältet “Note” saknas.
+
+Mongosats:
+db.orders.find({'Note':{$exists:false}}).pretty()
+
+svar:
+{
+        "_id" : ObjectId("5e2f0fa3765a04304c7e3dcd"),
+        "Id" : 102,
+        "Name" : "Matilda",
+        "Subscriber" : true,
+        "Payment" : {
+                "Type" : "Credit-Card",
+                "Total" : 700,
+                "Success" : false
+        }
+}
+
+#endregion
+
+#region 4-Hitta alla dokument som har "Type": "Credit-Card" sorterat efter “Total” i stigande ordning.
+
+Mongosats:
+db.orders.find({ "Payment.Type": 'Credit-Card' }).sort({"Payment.Total": 1}).pretty()
+
+svar:
+{
+        "_id" : ObjectId("5e2f0fa3765a04304c7e3dcb"),
+        "Id" : 100,
+        "Name" : "Eva",
+        "Subscriber" : true,
+        "Payment" : {
+                "Type" : "Credit-Card",
+                "Total" : 400,
+                "Success" : true
+        },
+        "Note" : "1st Complete Record"
+}
+{
+        "_id" : ObjectId("5e2f0fa3765a04304c7e3dcd"),
+        "Id" : 102,
+        "Name" : "Matilda",
+        "Subscriber" : true,
+        "Payment" : {
+                "Type" : "Credit-Card",
+                "Total" : 700,
+                "Success" : false
+        }
+}
+#endregion
+
+#region 5-Sortera all dokument efter Total i fallande ordning och visa bara dokument 2 och 3 (från resultatet). 
+
+Mongosats:
+db.orders.find().sort({"Payment.Total": 1}).skip(1).limit(2).pretty()
+
+
+{
+        "_id" : ObjectId("5e2f0fa3765a04304c7e3dcf"),
+        "Id" : 104,
+        "Name" : "Rikard",
+        "Subscriber" : false,
+        "Payment" : {
+                "Type" : "Debit-Card",
+                "Total" : 300,
+                "Success" : false
+        },
+        "Note" : "Completed Payment"
+}
+{
+        "_id" : ObjectId("5e2f0fa3765a04304c7e3dcb"),
+        "Id" : 100,
+        "Name" : "Eva",
+        "Subscriber" : true,
+        "Payment" : {
+                "Type" : "Credit-Card",
+                "Total" : 400,
+                "Success" : true
+        },
+        "Note" : "1st Complete Record"
+}
+#endregion
+
+#region 6-Aggregera “Success” och visa antal i fallande ordning. (Hur många “Success” är “true” och hur många är “false”). 
+
+
+Mongosats:
+db.orders.aggregate(
+	[
+		{$match:{'Payment.Success':{$exists:true}}},
+		{$group:{_id:"$Payment.Success",sum:{$sum:1}}},
+		{$sort:{sum:-1}}
+		
+	]
+)
+
+svar:
+{ "_id" : true, "sum" : 2 }
+{ "_id" : false, "sum" : 2 }
+
+#endregion
+
